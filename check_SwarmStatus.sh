@@ -5,17 +5,12 @@
 # So this script returns Status 'Ok' when the all the managers are healthy and working, 'Warning' when any of the manager is unhealthy, And 'Critical' when more than half of the managers are unhealthy.
 # In this script we have used 'docker node ls' command to know the status of the managers from any node. So if it is a worker node where we run  this script, then it returns 'Ok' as on woker node we cann't get the status of any node.
 
-err=$(( docker node ls ) 2>&1) # Checking if the node on which the script is running is a worker node. 
-if [ $? -gt 0 ];
-then
-        if [ "$err" == "Error response from daemon: This node is not a swarm manager. Worker nodes can't be used to view or modify cluster state. Please run this command on a manager node or promote the current node to a manager." ];
-        then 
-                echo "OK - This is workernode."
-                exit 0
-        else
-                echo "CRITICAL - Swarm is Unhealthy (not in quorum)"
-                exit 2
-        fi
+is_manager=$(docker info | grep “Is Manager” | awk ‘{print $3}’) # checks if the node is worker node or not.
+
+if [ “x$is_manager” = “xfalse” ]
+then 
+        echo "OK - This is workernode."
+        exit 0
 fi
 
 arr=( $(docker node ls --format {{.ManagerStatus}}) )
