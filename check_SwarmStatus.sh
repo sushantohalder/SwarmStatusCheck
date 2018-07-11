@@ -1,9 +1,40 @@
 #!/bin/bash
 
 
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#                       Introduction
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 # This script is made for a specific use-case i.e. to monitor the swarm quorum. So a docker swarm quorum is formed when there are more than half managers are up and woking.
 # So this script returns Status 'Ok' when the all the managers are healthy and working, 'Warning' when any of the manager is unhealthy, And 'Critical' when more than half of the managers are unhealthy.
 # In this script we have used 'docker node ls' command to know the status of the managers from any node. So if it is a worker node where we run  this script, then it returns 'Ok' as on woker node we cann't get the status of any node.
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#                       License
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#     This plugin monitors the docker swarm quorum.
+#     Copyright (C) 2018  Sushanto Halder
+
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 is_manager=$(docker info | grep “Is Manager” | awk ‘{print $3}’) # checks if the node is worker node or not.
 
