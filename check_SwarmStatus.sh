@@ -36,12 +36,18 @@
 
 
 
-is_manager=$(docker info | grep “Is Manager” | awk ‘{print $3}’) # checks if the node is worker node or not.
+is_manager=$(docker info --format "{{json .Swarm.ControlAvailable }}") # checks if the node is worker node or not.
 
-if [ “x$is_manager” = “xfalse” ]
+if [ "x$is_manager" = "xfalse" ]
 then 
-        echo "OK - This is workernode."
-        exit 0
+        is_active=$(docker info --format "{{json .Swarm.LocalNodeState }}") # check if the worker node is active or not.
+        if [ "x$is_active" = 'x"active"' ]
+        then
+                echo "OK - This is an active workernode."
+                exit 0
+        fi
+        echo "CRITICAL - Workernode not active"
+        exit 2
 fi
 
 arr=( $(docker node ls --format {{.ManagerStatus}}) )
