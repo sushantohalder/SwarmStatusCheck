@@ -36,9 +36,9 @@
 
 
 
-is_manager=$(docker info | grep “Is Manager” | awk ‘{print $3}’) # checks if the node is worker node or not.
+is_manager=$(docker info | grep "Is Manager" | awk '{print $3}') # checks if the node is worker node or not.
 
-if [ “x$is_manager” = “xfalse” ]
+if [ "x$is_manager" = "xfalse" ]
 then 
         echo "OK - This is workernode."
         exit 0
